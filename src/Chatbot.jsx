@@ -11,6 +11,7 @@ const ChatBot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [userName, setUserName] = useState('');
   const [userNameFixed, setUserNameFixed] = useState(false);
+  const [nameWarning, setNameWarning] = useState(false);
   const messagesEndRef = useRef(null);
 
   const handleInputChange = (e) => {
@@ -20,7 +21,7 @@ const ChatBot = () => {
 
   const handleSendMessage = () => {
     if (!userNameFixed) {
-      setUserNameFixed(true);
+      setNameWarning(true);
       return;
     }
 
@@ -57,8 +58,8 @@ const ChatBot = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white relative">
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+    <div className="flex flex-col h-screen bg-black text-white">
+      <div className="text-center py-4">
         {!userNameFixed && (
           <>
             <input
@@ -70,14 +71,17 @@ const ChatBot = () => {
             />
             <button
               onClick={() => setUserNameFixed(true)}
-              className="ml-2 p-2 rounded-full text-white bg-blue-500 hover:bg-blue-600 focus:outline-none"
+              className="ml-2 p-2 rounded-full text-white bg-cyan-900 hover:bg-opacity-70 focus:outline-none"
             >
-              Add
+              User
             </button>
           </>
         )}
         {userNameFixed && (
           <div className="text-xl">{userName}</div>
+        )}
+        {nameWarning && (
+          <p className="text-red-500 mt-2">Please add your name before starting the chat.</p>
         )}
       </div>
       <div className="flex-1 overflow-y-auto px-4 py-8 space-y-4">
@@ -102,10 +106,10 @@ const ChatBot = () => {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex items-center justify-center px-4 py-2 bg-white bg-opacity-25">
+      <div className="flex flex-col sm:flex-row items-center justify-center px-4 py-2 bg-white bg-opacity-25">
         <input
           type="text"
-          className="flex-grow px-4 py-2 mr-2 bg-transparent border-b-2 border-white focus:outline-none focus:border-blue-300 text-white"
+          className="flex-grow px-4 py-2 mb-2 sm:mb-0 mr-0 sm:mr-2 bg-transparent border-b-2 border-white focus:outline-none focus:border-blue-300 text-white"
           placeholder="Type your message..."
           value={input}
           onChange={handleInputChange}
@@ -113,14 +117,14 @@ const ChatBot = () => {
         />
         <button
           onClick={handleSendMessage}
-          className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-full focus:outline-none"
+          className="px-4 py-2 mb-2 sm:mb-0 text-white bg-gray-900 hover:bg-opacity-70 rounded-full focus:outline-none"
           disabled={!userNameFixed}
         >
           Send
         </button>
         <button
           onClick={handleClearChat}
-          className="ml-2 px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-full focus:outline-none"
+          className="px-4 py-2 mb-2 sm:mb-0 ml-0 sm:ml-2 text-white bg-red-500 hover:bg-red-600 rounded-full focus:outline-none"
         >
           Clear Chat
         </button>
